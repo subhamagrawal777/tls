@@ -1,0 +1,44 @@
+server:
+  maxThreads: 256
+  minThreads: 256
+  applicationConnectors:
+    - type: http
+      port: 8080
+  adminConnectors:
+    - type: http
+      port: 8081
+
+  applicationContextPath: /
+  requestLog:
+    appenders:
+      - type: console
+        timeZone: IST
+
+serviceUrl: http://mf-connector.traefik.stg.phonepe.nb6
+
+serviceName: tls
+
+logging:
+  level: INFO
+  loggers:
+    com.phonepe.fs.mf.connector: DEBUG
+    org.hibernate: ERROR
+  appenders:
+    - type: console
+      threshold: DEBUG
+      timeZone: IST
+      queueSize: 1024
+      logFormat: "%(%-5level) [%date] %X{request_id} %X{user_id} [%thread] [%logger{0}]: %message%n"
+
+serviceDiscovery:
+  namespace: phonepe
+  environment: stage
+  zookeeper: localhost
+  publishedHost: 127.0.0.1
+  publishedPort: 8080
+  connectionRetryIntervalMillis: 5000
+
+swagger:
+  resourcePackage: com.golu.tls.resources
+  title: TLS Tester Server
+  description: Server for the TLS Test
